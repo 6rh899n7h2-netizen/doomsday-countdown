@@ -1,0 +1,111 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #000000;
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: #ff0000;
+}
+
+.container {
+    text-align: center;
+    padding: 40px;
+}
+
+.doomsday-title {
+    font-size: 4rem;
+    font-weight: bold;
+    color: #ff0000;
+    margin-bottom: 60px;
+    text-shadow: 0 0 10px #ff0000;
+    letter-spacing: 4px;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        text-shadow: 0 0 10px #ff0000;
+    }
+    50% {
+        text-shadow: 0 0 20px #ff0000, 0 0 30px #ff0000;
+    }
+}
+
+.countdown {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.time-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.time-value {
+    font-size: 5rem;
+    font-weight: bold;
+    color: #ff0000;
+    font-family: 'Courier New', monospace;
+    min-width: 200px;
+    text-shadow: 0 0 10px #ff0000;
+    line-height: 1;
+}
+
+.time-label {
+    font-size: 1.5rem;
+    color: #ff0000;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+    .doomsday-title {
+        font-size: 2.5rem;
+        margin-bottom: 40px;
+    }
+
+    .time-value {
+        font-size: 3rem;
+        min-width: 120px;
+    }
+
+    .time-label {
+        font-size: 1rem;
+    }
+
+    .countdown {
+        gap: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .doomsday-title {
+        font-size: 1.8rem;
+        margin-bottom: 30px;
+    }
+
+    .time-value {
+        font-size: 2rem;
+        min-width: 80px;
+    }
+
+    .time-label {
+        font-size: 0.8rem;
+    }
+
+    .countdown {
+        gap: 15px;
+    }
+}
