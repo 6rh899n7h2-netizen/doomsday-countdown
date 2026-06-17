@@ -46,7 +46,6 @@ function updateCountdown() {
 
 function updateBackgroundAndColor(progress) {
     const body = document.body;
-    const container = document.querySelector('.container');
     
     // First background image
     const bg1 = 'https://cdn.discordapp.com/attachments/1502538307567878214/1516927800202887279/240_20260618010111.png?ex=6a346c9a&is=6a331b1a&hm=e6f775671031384c47d21018369e252115ae999a8bdfd7f9d03df6faaa231019&';
@@ -54,14 +53,20 @@ function updateBackgroundAndColor(progress) {
     // Second background image
     const bg2 = 'https://cdn.discordapp.com/attachments/1502538307567878214/1516927828375900241/240_20260618010344.png?ex=6a346ca1&is=6a331b21&hm=038432649c14136fff2adb75661715b90111b959f4054a6053897caf8959804b&';
     
-    // Create gradient: bg1 at 0% progress, bg2 at 100% progress
-    const backgroundImage = `
-        linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+    // First image starts at full opacity (1) and fades to 0
+    const opacity1 = 1 - progress;
+    
+    // Second image starts at 0 opacity and fades in to full opacity (1)
+    const opacity2 = progress;
+    
+    // Create pseudo-elements with opacity layers stacked on top of each other
+    body.style.backgroundImage = `
+        linear-gradient(rgba(255, 255, 255, ${opacity1}), rgba(255, 255, 255, ${opacity1})),
         url('${bg1}'),
+        linear-gradient(rgba(255, 255, 255, ${1 - opacity2}), rgba(255, 255, 255, ${1 - opacity2})),
         url('${bg2}')
     `;
     
-    body.style.backgroundImage = backgroundImage;
     body.style.backgroundSize = 'cover';
     body.style.backgroundPosition = 'center';
     body.style.backgroundAttachment = 'fixed';
@@ -93,15 +98,6 @@ function updateBackgroundAndColor(progress) {
     timeLabels.forEach(element => {
         element.style.color = textColor;
     });
-    
-    // Opacity of first image decreases, second image shows through
-    const opacity1 = 1 - progress;
-    body.style.backgroundImage = `
-        linear-gradient(rgba(0, 0, 0, ${0.3 * (1 - progress)}), rgba(0, 0, 0, ${0.3 * (1 - progress)})),
-        linear-gradient(rgba(255, 255, 255, ${opacity1}), rgba(255, 255, 255, ${opacity1})),
-        url('${bg1}'),
-        url('${bg2}')
-    `;
 }
 
 // Update countdown immediately on page load
