@@ -59,17 +59,33 @@ function updateBackgroundAndColor(progress) {
     // Second image starts at 0 opacity and fades in to full opacity (1)
     const opacity2 = progress;
     
-    // Create pseudo-elements with opacity layers stacked on top of each other
-    body.style.backgroundImage = `
-        linear-gradient(rgba(255, 255, 255, ${opacity1}), rgba(255, 255, 255, ${opacity1})),
-        url('${bg1}'),
-        linear-gradient(rgba(255, 255, 255, ${1 - opacity2}), rgba(255, 255, 255, ${1 - opacity2})),
-        url('${bg2}')
-    `;
-    
+    // Set background image to the second image as the base
+    body.style.backgroundImage = `url('${bg2}')`;
     body.style.backgroundSize = 'cover';
     body.style.backgroundPosition = 'center';
     body.style.backgroundAttachment = 'fixed';
+    
+    // Create or update a pseudo-element for the first image overlay
+    let bgOverlay = document.getElementById('bg-overlay');
+    if (!bgOverlay) {
+        bgOverlay = document.createElement('div');
+        bgOverlay.id = 'bg-overlay';
+        bgOverlay.style.position = 'fixed';
+        bgOverlay.style.top = '0';
+        bgOverlay.style.left = '0';
+        bgOverlay.style.width = '100%';
+        bgOverlay.style.height = '100%';
+        bgOverlay.style.backgroundImage = `url('${bg1}')`;
+        bgOverlay.style.backgroundSize = 'cover';
+        bgOverlay.style.backgroundPosition = 'center';
+        bgOverlay.style.backgroundAttachment = 'fixed';
+        bgOverlay.style.zIndex = '-1';
+        bgOverlay.style.pointerEvents = 'none';
+        body.appendChild(bgOverlay);
+    }
+    
+    // Update opacity of the overlay (first image)
+    bgOverlay.style.opacity = opacity1;
     
     // Calculate color transition from white (255, 255, 255) to red (255, 0, 0)
     const red = 255;
