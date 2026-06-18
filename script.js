@@ -127,7 +127,12 @@ function initializeAudio() {
         audioPlayer.id = 'background-audio';
         audioPlayer.loop = true;
         audioPlayer.volume = 0.3; // 30% volume (moderate)
-        audioPlayer.src = 'https://drive.google.com/uc?export=download&id=1n3W4HDXHyxDC72j2lDrO2eQTIQ-8F52i';
+        audioPlayer.crossOrigin = 'anonymous';
+        
+        // Google Drive direct download URL
+        const fileId = '1n3W4HDXHyxDC72j2lDrO2eQTIQ-8F52i';
+        audioPlayer.src = `https://drive.google.com/uc?export=download&id=${fileId}&confirm=t`;
+        
         document.body.appendChild(audioPlayer);
     }
     
@@ -148,6 +153,7 @@ function initializeAudio() {
         muteButton.style.cursor = 'pointer';
         muteButton.style.borderRadius = '5px';
         muteButton.style.transition = 'all 0.3s ease';
+        muteButton.style.fontWeight = 'bold';
         
         muteButton.addEventListener('mouseover', function() {
             muteButton.style.backgroundColor = 'rgba(255, 0, 0, 0.2)';
@@ -159,9 +165,13 @@ function initializeAudio() {
             muteButton.style.textShadow = 'none';
         });
         
-        muteButton.addEventListener('click', function() {
+        muteButton.addEventListener('click', function(e) {
+            e.stopPropagation();
             if (audioPlayer.paused) {
-                audioPlayer.play();
+                audioPlayer.play().catch(err => {
+                    console.log('Error playing audio:', err);
+                    alert('Could not play audio. Please check the audio file.');
+                });
                 muteButton.innerHTML = '🔊';
             } else {
                 audioPlayer.pause();
@@ -172,9 +182,9 @@ function initializeAudio() {
         document.body.appendChild(muteButton);
     }
     
-    // Try to play audio
+    // Try to play audio on first interaction
     audioPlayer.play().catch(function(error) {
-        console.log('Audio autoplay was blocked. User must interact with the page first.');
+        console.log('Autoplay blocked - waiting for user interaction');
     });
 }
 
@@ -199,10 +209,12 @@ if (document.readyState === 'loading') {
     setInterval(updateCountdown, 1000);
 }
 
-// Allow audio to play on user interaction (browser autoplay policy)
+// Allow audio to play on user interaction
 document.addEventListener('click', function() {
     const audioPlayer = document.getElementById('background-audio');
     if (audioPlayer && audioPlayer.paused) {
-        audioPlayer.play();
+        audioPlayer.play().catch(err => {
+            console.log('Could not autoplay audio:', err);
+        });
     }
 });
