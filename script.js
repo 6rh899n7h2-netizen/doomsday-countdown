@@ -116,80 +116,9 @@ function updateBackgroundAndColor(progress) {
     });
 }
 
-// Initialize audio
-function initializeAudio() {
-    let audioPlayer = document.getElementById('background-audio');
-    let muteButton = document.getElementById('mute-button');
-    
-    if (!audioPlayer) {
-        // Create audio element
-        audioPlayer = document.createElement('audio');
-        audioPlayer.id = 'background-audio';
-        audioPlayer.loop = true;
-        audioPlayer.volume = 0.3; // 30% volume (moderate)
-        audioPlayer.crossOrigin = 'anonymous';
-        
-        // Internet Archive direct MP3 download URL
-        audioPlayer.src = 'https://archive.org/download/my-hero-academia-all.-for.-one-hq-cover/My%20Hero%20Academia%20All%20For%20One%20HQ%20Cover.mp3';
-        
-        document.body.appendChild(audioPlayer);
-    }
-    
-    if (!muteButton) {
-        // Create mute button
-        muteButton = document.createElement('button');
-        muteButton.id = 'mute-button';
-        muteButton.innerHTML = '🔊';
-        muteButton.style.position = 'fixed';
-        muteButton.style.top = '20px';
-        muteButton.style.right = '20px';
-        muteButton.style.zIndex = '1000';
-        muteButton.style.padding = '10px 15px';
-        muteButton.style.fontSize = '24px';
-        muteButton.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
-        muteButton.style.border = '2px solid #ff0000';
-        muteButton.style.color = '#ff0000';
-        muteButton.style.cursor = 'pointer';
-        muteButton.style.borderRadius = '5px';
-        muteButton.style.transition = 'all 0.3s ease';
-        muteButton.style.fontWeight = 'bold';
-        
-        muteButton.addEventListener('mouseover', function() {
-            muteButton.style.backgroundColor = 'rgba(255, 0, 0, 0.2)';
-            muteButton.style.textShadow = '0 0 10px #ff0000';
-        });
-        
-        muteButton.addEventListener('mouseout', function() {
-            muteButton.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
-            muteButton.style.textShadow = 'none';
-        });
-        
-        muteButton.addEventListener('click', function(e) {
-            e.stopPropagation();
-            if (audioPlayer.paused) {
-                audioPlayer.play().catch(err => {
-                    console.log('Error playing audio:', err);
-                });
-                muteButton.innerHTML = '🔊';
-            } else {
-                audioPlayer.pause();
-                muteButton.innerHTML = '🔇';
-            }
-        });
-        
-        document.body.appendChild(muteButton);
-    }
-    
-    // Try to play audio on first interaction
-    audioPlayer.play().catch(function(error) {
-        console.log('Autoplay blocked - waiting for user interaction');
-    });
-}
-
 // Update countdown immediately on page load
 window.addEventListener('load', function() {
     updateCountdown();
-    initializeAudio();
     // Update countdown every second
     setInterval(updateCountdown, 1000);
 });
@@ -198,21 +127,9 @@ window.addEventListener('load', function() {
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function() {
         updateCountdown();
-        initializeAudio();
         setInterval(updateCountdown, 1000);
     });
 } else {
     updateCountdown();
-    initializeAudio();
     setInterval(updateCountdown, 1000);
 }
-
-// Allow audio to play on user interaction
-document.addEventListener('click', function() {
-    const audioPlayer = document.getElementById('background-audio');
-    if (audioPlayer && audioPlayer.paused) {
-        audioPlayer.play().catch(err => {
-            console.log('Could not autoplay audio:', err);
-        });
-    }
-});
