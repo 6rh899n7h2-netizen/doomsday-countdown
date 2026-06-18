@@ -129,9 +129,8 @@ function initializeAudio() {
         audioPlayer.volume = 0.3; // 30% volume (moderate)
         audioPlayer.crossOrigin = 'anonymous';
         
-        // Google Drive direct download URL
-        const fileId = '1n3W4HDXHyxDC72j2lDrO2eQTIQ-8F52i';
-        audioPlayer.src = `https://drive.google.com/uc?export=download&id=${fileId}&confirm=t`;
+        // Internet Archive direct MP3 download URL
+        audioPlayer.src = 'https://archive.org/download/my-hero-academia-all.-for.-one-hq-cover/My%20Hero%20Academia%20All%20For%20One%20HQ%20Cover.mp3';
         
         document.body.appendChild(audioPlayer);
     }
@@ -170,7 +169,6 @@ function initializeAudio() {
             if (audioPlayer.paused) {
                 audioPlayer.play().catch(err => {
                     console.log('Error playing audio:', err);
-                    alert('Could not play audio. Please check the audio file.');
                 });
                 muteButton.innerHTML = '🔊';
             } else {
